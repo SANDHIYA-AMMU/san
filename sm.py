@@ -1,0 +1,5 @@
+s=input()
+K1=int(input())
+s=sorted(s)
+s="".join(str(x) for x in s)
+print(s[:len(s)-K1])
