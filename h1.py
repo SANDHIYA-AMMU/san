@@ -1,4 +1,4 @@
-l=list(map(int,input().split(' ')))
-for i in l:
-    if(l.count(i)==1):
-        print(i)
+ll=list(map(int,input().split(' ')))
+for k in ll:
+    if(ll.count(k)==1):
+        print(k)
