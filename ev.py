@@ -1,0 +1,5 @@
+a,b=input().split(' ')
+a,b=int(a),int(b)
+n=range(a+1,b)
+o=list(filter(lambda x: x%2==0,n))
+print(" ".join(str(u) for u in o))
