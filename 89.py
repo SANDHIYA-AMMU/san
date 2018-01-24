@@ -1,2 +1,2 @@
-#89th prb
-print("".join(sorted(sorted(input()), key=str.upper)))
+"".join(sorted(sorted(input()), key=str.upper))
+print(x)
