@@ -1,2 +1,2 @@
-#111th prb
-print(len(input()))
+l=len(input())
+print(l)
