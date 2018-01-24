@@ -1,2 +1,2 @@
-#103rd prb
-print(input().title())
+x=input().title()
+print(x)
