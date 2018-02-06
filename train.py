@@ -151,14 +151,17 @@ def getpassengerdet(seat_count,tn,cno):
         if getuser=='y' or getuser=='Y':
             getpassengerdet(seat_count,tn,cno)
     else:
+        print("\n\n")
+        print('='*80)
         bye=input("Enter any key to see Booking Details:")
         return p,seat
 
 def displayDetail(p,seat):
-    print("Booking Details\n")
+    print("Booking Details\n".center(80))
     print(tabulate(bookDetail(p,seat),headers=['Booking_Id','From','To','Date','Train_No','Class']))
     print("\n")
-    print("Passenger Details\n")
+    print('='*80)
+    print("Passenger Details\n".center(80))
     print(tabulate(passDetail(p),headers=['S_NO','Passenger_Name', 'Age','Berth','seat_No']))
     print(datedict)
 
