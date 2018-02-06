@@ -3,7 +3,7 @@ from tabulate import tabulate
 bid=10
 #dictionary for city code
 ccode={'pondicherry':'pdy','chennai':'chn','madurai':'mdu'}
-l=['l','m','h']
+l=['l','m','u']
 #BY USING CITY_CODE(ccode) LIST THE TRAIN USING DICT
 srcdest={'pdychn':['pc1','pc2'],'chnmdu':['cm1','cm2']}
 
@@ -16,7 +16,10 @@ t={'pc1':[['name','deptime','arr_time','tarvel_time'],['c1','c2']],
     'pc2':[['name','deptime','arr_time','tarvel_time'],['c1','c2']]}
 
 #CLASS DICT CONTAINS CLASS --->LIST OF SEATS [LOWER BERTH,MIDDLE BERTH, UPPER BERTH]
-c={'pc1c1':[[10,10,10,],[50]],'pc1c2':[[15,15,15],[30]]}
+c={'pc1c1':[[10,10,10,],[50]],'pc1c2':[[15,15,15],[30]],
+   'cm1c1':[[10,10,10,],[50]],'cm1c2':[[15,15,15],[30]],
+   'cm2c1':[[10,10,10,],[50]],'cm2c2':[[15,15,15],[30]],
+   'pc2c1':[[10,10,10,],[50]],'pc2c2':[[15,15,15],[30]]}
 datedict={}
 
 #FUNCTION FOR GETTING DETAILS FROM DICT AND STORE AND RETURN TO OBJECT
@@ -98,10 +101,8 @@ def bookDetail(p,seat):
     return b
 
 def main():
-    #fro=input("Enter From:")
-    fro="pondicherry"
-    #to=input("Enter to:")
-    to="chennai"
+    fro=input("Enter From:")
+    to=input("Enter to:")
     dat= list(map(int,input("Enter date within 15 days yyyy/mm/dd").split('/')))
     #dat=list(map(int,"1990/9/9".split('/')))
     dat=date(dat[0],dat[1],dat[2])
@@ -150,7 +151,7 @@ def getpassengerdet(seat_count,tn,cno):
         if getuser=='y' or getuser=='Y':
             getpassengerdet(seat_count,tn,cno)
     else:
-        bye=input("Enter any to see Booking Details:")
+        bye=input("Enter any key to see Booking Details:")
         return p,seat
 
 def displayDetail(p,seat):
