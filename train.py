@@ -9,24 +9,24 @@ bid+=1
 
 #dictionary for city code
 ccode={'pondicherry':'pdy','chennai':'chn','madurai':'mdu'}
-l=['low','middle','upper']
+l=['l','m','u']
 
 #BY USING CITY_CODE(ccode) LIST THE TRAIN USING DICT
-srcdest={'pdychn':['pc1','pc2'],'chnmdu':['cm1','cm2']}
+srcdest={'pdychn':['t1','t2'],'chnmdu':['t3','t4']}
 
 #TRAIN DICT
 #IT CONTAINS--> TRAIN_NO->LIST_OF [ train_name, Departure_time, Arrival_time,
 #               Weekdays("0123456")], LIST[CLASSES]
-t={'pc1':[['Cheran','10:00','13:00','3 hours'],['a','b']],
-   'cm1':[['pandiyan Exp','12:00','20:00','8 hours'],['a','b']],
-    'cm2':[['Pallavan Exp','00:00','08:00','8 hours'],['a','b']],
-    'pc2':[['MGR Exp','13:00','16:00','3 hours'],['a','b']]}
+t={'t1':[['Chnexp','10:00','13:00','3 hours'],['c1','c2']],
+   't2':[['pandiyan Exp','12:00','20:00','8 hours'],['c1','c2']],
+    't3':[['Pallavan Exp','00:00','08:00','8 hours'],['c1','c2']],
+    't4':[['Bangalore Exp','13:00','16:00','3 hours'],['c1','c2']]}
 
 #CLASS DICT CONTAINS CLASS --->LIST OF SEATS [LOWER BERTH,MIDDLE BERTH, UPPER BERTH]
-c={'pc1a':[[10,10,10,],[50]],'pc1b':[[15,15,15],[30]],
-    'pc2a':[[10,10,10,],[50]],'pc2b':[[15,15,15],[30]],
-    'cm1a':[[10,10,10,],[100]],'cm1b':[[15,15,15],[100]],
-    'cm2a':[[10,10,10,],[100]],'cm2b':[[15,15,15],[100]],
+c={'t1c1':[[10,10,10,],[50]],'t1c2':[[15,15,15],[30]],
+    't2c1':[[10,10,10,],[50]],'t2c2':[[15,15,15],[30]],
+    't3c1':[[10,10,10,],[100]],'t3c2':[[15,15,15],[100]],
+    't4c1':[[10,10,10,],[100]],'t4c2':[[15,15,15],[100]],
     }
 datedict = json.load(open("datedict.txt"))
 #FUNCTION FOR GETTING DETAILS FROM DICT AND STORE AND RETURN TO OBJECT
@@ -65,7 +65,7 @@ def pickberth(cno,b1,p):
 def getpasdet(i):
     name=input("Enter Name:")
     age=input("Enter Age:")
-    berth=input("Enter Berth(low/middle/upper)")
+    berth=input("Enter Berth(l/m/u)")
     opt=input("Enter Optional Berth(y/n)")
     return i,name,age,berth,opt
 
@@ -129,7 +129,7 @@ def selectTrain(fro,to):
     tn=input("Enter train no")
     cno=input("Select Class:")
     seat_count=checkdet(tn,cno,str(dat))
-    print("\n\nAvailabilty:\nTrain_no:\t",tn," \nclass",cno,":\nSeat Count:\t",seat_count) #claculate the day by using math.....
+    print("\n\nAvailabilty:\nTrain_no:\t",tn," \nclass:",cno,"\nSeat Count:\t",seat_count) #claculate the day by using math.....
     return tn,cno,seat_count
 
 def getpassengerdet(seat_count,tn,cno):
@@ -152,11 +152,13 @@ def getpassengerdet(seat_count,tn,cno):
         bye=input("Enter any key to see Booking Details:")
         return p,seat
 def displayDetail(p,seat):
+    print("\n\n")
     print('='*80)
     print("Booking Details".center(80))
     print("\n\n")
     print(tabulate(bookDetail(p,seat),headers=['Booking_Id','From','To','Date','Train_No','Class']))
-    print("\n")
+    print("\n\n")
+    print('='*80)
     print("Passenger Details".center(80))
     print("\n\n")
     print(tabulate(passDetail(p),headers=['S_NO','Passenger_Name', 'Age','Berth','seat_No']))
