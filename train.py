@@ -1,27 +1,34 @@
+import json
 from datetime import date
 from tabulate import tabulate
-bid=10
+file = open("bid.txt", "r")
+bid=file.read()
+file.close()
+bid=int(bid)
+bid+=1
+
 #dictionary for city code
 ccode={'pondicherry':'pdy','chennai':'chn','madurai':'mdu'}
-l=['l','m','u']
+l=['low','middle','upper']
+
 #BY USING CITY_CODE(ccode) LIST THE TRAIN USING DICT
 srcdest={'pdychn':['pc1','pc2'],'chnmdu':['cm1','cm2']}
 
 #TRAIN DICT
 #IT CONTAINS--> TRAIN_NO->LIST_OF [ train_name, Departure_time, Arrival_time,
 #               Weekdays("0123456")], LIST[CLASSES]
-t={'pc1':[['name','deptime','arr_time','tarvel_time'],['c1','c2']],
-    'cm1':[['name','deptime','arr_time','tarvel_time'],['c1','c2']],
-    'cm2':[['name','deptime','arr_time','tarvel_time'],['c1','c2']],
-    'pc2':[['name','deptime','arr_time','tarvel_time'],['c1','c2']]}
+t={'pc1':[['Cheran','10:00','13:00','3 hours'],['a','b']],
+   'cm1':[['pandiyan Exp','12:00','20:00','8 hours'],['a','b']],
+    'cm2':[['Pallavan Exp','00:00','08:00','8 hours'],['a','b']],
+    'pc2':[['MGR Exp','13:00','16:00','3 hours'],['a','b']]}
 
 #CLASS DICT CONTAINS CLASS --->LIST OF SEATS [LOWER BERTH,MIDDLE BERTH, UPPER BERTH]
-c={'pc1c1':[[10,10,10,],[50]],'pc1c2':[[15,15,15],[30]],
-   'cm1c1':[[10,10,10,],[50]],'cm1c2':[[15,15,15],[30]],
-   'cm2c1':[[10,10,10,],[50]],'cm2c2':[[15,15,15],[30]],
-   'pc2c1':[[10,10,10,],[50]],'pc2c2':[[15,15,15],[30]]}
-datedict={}
-
+c={'pc1a':[[10,10,10,],[50]],'pc1b':[[15,15,15],[30]],
+    'pc2a':[[10,10,10,],[50]],'pc2b':[[15,15,15],[30]],
+    'cm1a':[[10,10,10,],[100]],'cm1b':[[15,15,15],[100]],
+    'cm2a':[[10,10,10,],[100]],'cm2b':[[15,15,15],[100]],
+    }
+datedict = json.load(open("datedict.txt"))
 #FUNCTION FOR GETTING DETAILS FROM DICT AND STORE AND RETURN TO OBJECT
 def trainl(tno): #train_no(tno) as arguement
     #get dict train_det,class_det from file
@@ -30,8 +37,7 @@ def trainl(tno): #train_no(tno) as arguement
     arr=t[tno][0][2]
     ttime=t[tno][0][3]
     class_section=t[tno][1]
-    return  tno , name , dep , arr , ttime , class_section
-
+    return  tno , name , dep , arr , ttime , class_section  # return as list
     # RETURN TRAIN DETAILS...
 
 #FUNCTION FOR LISTING TRAINS...
@@ -49,18 +55,17 @@ def checkdet(tn,cno,dat):
     while dat not in datedict:
         v={}
         v[tn+cno]=c[tn+cno]
-        datedict[dat]=v
+        datedict[(dat)]=v
     return sum(datedict[dat][tn+cno][0])==0 and "no seats" or sum(datedict[dat][tn+cno][0])
-
 
 
 def pickberth(cno,b1,p):
     b1=l.index(b1)
-    return datedict[dat][cno][0][b1]>0 and l[b1] or p=='y' and l[c[cno][0].index(max(datedict[dat][cno][0]))] or 'no seats in '+l[b1]
+    return datedict[str(dat)][cno][0][b1]>0 and l[b1] or p=='y' and l[datedict[str(dat)][0].index(max(datedict[str(dat)][cno][0]))] or 'no seats in '+l[b1]
 def getpasdet(i):
     name=input("Enter Name:")
     age=input("Enter Age:")
-    berth=input("Enter Berth(l/m/u)")
+    berth=input("Enter Berth(low/middle/upper)")
     opt=input("Enter Optional Berth(y/n)")
     return i,name,age,berth,opt
 
@@ -76,8 +81,6 @@ def generateseatno(p,li):
     return t
 
 def passDetail(p):
-    #print(tabulate(bookDetail(),headers=['S_NO','Passenger_Name', 'Age','Berth','seat_No']))
-    #print(tabulate (p, headers=['S_NO','Passenger_Name', 'Age','Berth','Optional Berth','Berth Status']))
     bd =[ ]
     for i in range(len(p)):
         sno=p[i][0]
@@ -87,17 +90,17 @@ def passDetail(p):
         seatno=getseat[i]
         bd.append ( [ sno , passen , age , berth , seatno ] )
     return bd
+
 def bookDetail(p,seat):
     b=[]
     global bid
     global getseat
     print("Booking ID: b"+str(bid))
     pbid="b"+str(bid)
-    bid+=1
-    getseat=generateseatno(p,datedict[dat][tn+cno][0])
+    getseat=generateseatno(p,datedict[str(dat)][tn+cno][0])
     b.append([str(pbid),p[0][1],cno,getseat,])
     print("No. of Seats:",seat,"And Seats are: ",getseat)
-    print("Price:",datedict[dat][tn+cno][1][0]*seat)
+    print("Price:",datedict[str(dat)][tn+cno][1][0]*seat)
     return b
 
 def main():
@@ -115,24 +118,19 @@ def main():
         rang=0
     else:
         rang=int(str(dat - date.today()).split(" ")[0])
-    #By using this range return the main
     if rang<=15 and rang>=0 :
-        print("ok in range")
         return fro,to,dat
     else:
         print("Enter the Date correct date:")
         return main()
-    #get the details
+
 def selectTrain(fro,to):
     gettraindetails(fro,to)
-    tn=input("Enter tno")
-    cno=input("Enter 'c1/c2':")
-    #tn="pc1"
-    #cno="c1"
-    seat_count=checkdet(tn,cno,dat)
-    print("\n\nAvailabilty:\nTrain_no:\t",tn," and class",cno,":\t",seat_count) #claculate the day by using math.....
+    tn=input("Enter train no")
+    cno=input("Select Class:")
+    seat_count=checkdet(tn,cno,str(dat))
+    print("\n\nAvailabilty:\nTrain_no:\t",tn," \nclass",cno,":\nSeat Count:\t",seat_count) #claculate the day by using math.....
     return tn,cno,seat_count
-
 
 def getpassengerdet(seat_count,tn,cno):
     seat=int(input("Enter Total no_of Seats:"))
@@ -151,24 +149,23 @@ def getpassengerdet(seat_count,tn,cno):
         if getuser=='y' or getuser=='Y':
             getpassengerdet(seat_count,tn,cno)
     else:
-        print("\n\n")
-        print('='*80)
         bye=input("Enter any key to see Booking Details:")
         return p,seat
-
 def displayDetail(p,seat):
-    print("Booking Details\n".center(80))
+    print('='*80)
+    print("Booking Details".center(80))
+    print("\n\n")
     print(tabulate(bookDetail(p,seat),headers=['Booking_Id','From','To','Date','Train_No','Class']))
     print("\n")
-    print('='*80)
-    print("Passenger Details\n".center(80))
+    print("Passenger Details".center(80))
+    print("\n\n")
     print(tabulate(passDetail(p),headers=['S_NO','Passenger_Name', 'Age','Berth','seat_No']))
-    print(datedict)
-
+    file = open("bid.txt","w")
+    file.write(str(bid))
+    file.close()
+    json.dump(datedict, open("datedict.txt",'w'))
 
 fro,to,dat=main()
 tn,cno,seat_count=selectTrain(fro,to)
 p,seat=getpassengerdet(seat_count,tn,cno)
 displayDetail(p,seat)
-
-
